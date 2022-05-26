@@ -23,6 +23,8 @@ const Product = () => {
         enabled: !!limit && !!page && !!sort, // Chặn tự đông gọi api khi cái cấu hình null hoặc undefined
         keepPreviousData: true,
         // Giữa lại data khi fetch lại data tránh để data null tăng UX kết Hợp vs isFetching để hiển hị loading
+        staleTime: 60 * 1000, // thời gian lưa data lại ko cần chạy ngầm dể load mới data
+        cacheTime: 60 * 1000 * 10, // Thời gia bị kill
     });
 
     // useEffect(() => {

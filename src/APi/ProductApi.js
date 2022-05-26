@@ -51,3 +51,13 @@ export const getData = async ({ queryKey }) => {
         handleError(error);
     }
 };
+
+export const getDataInfinityQuery = async ({ queryKey, pageParam = 1 }) => {
+    try {
+        const res = await axios.get(`${queryKey}&page=${pageParam}`);
+
+        return res.data;
+    } catch (error) {
+        handleError(error);
+    }
+};
