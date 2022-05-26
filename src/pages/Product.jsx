@@ -23,10 +23,15 @@ const Product = () => {
     // ); // []
 
     const key = `/products?limit=${limit}&page=${page}&sort=${sort}`;
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading, error, refetch } = useQuery({
         queryKey: key,
         queryFn: getData,
+        enabled: !!limit && !!page && !!sort, // Chặn tự đông gọi api khi cái cấu hình null hoặc undefined
     });
+
+    useEffect(() => {
+        refetch(); // gọi lại useQuery khi refetching ở contex cha thay đổi
+    }, [refetching]);
 
     const totalPage = useMemo(() => {
         if (data?.count) return Math.ceil(data.count / limit);
