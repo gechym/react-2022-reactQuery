@@ -22,30 +22,6 @@ const useQuery = (url, opt) => {
             return (cache.current = {});
     }, [cache, option.sizeCache]);
 
-    // const fetchData = useCallback(
-    //     async (url, here) => {
-    //         if (!cache.current[url]) setLoading(true);
-
-    //         try {
-    //             const res = await axios.get(url);
-    //             if (!here) return;
-    //             toast.success('thang cong');
-    //             setData(res.data);
-    //             if (option.saveCache) {
-    //                 cache.current[url] = res.data;
-    //             }
-    //         } catch (err) {
-    //             if (!here) return;
-    //             setError(err.response.data.msg);
-    //             toast.error(err.response.data.msg);
-    //         } finally {
-    //             if (!here) return;
-    //             setLoading(false);
-    //         }
-    //     },
-    //     [cache, option.saveCache],
-    // );
-
     useEffect(() => {
         let here = true;
         if (cache.current[url]) {
