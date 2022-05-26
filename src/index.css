@@ -1,0 +1,86 @@
+@font-face {
+    font-family: 'Barlow';
+    font-weight: normal;
+    src: url('./fonts/Barlow-Regular.woff2') format('woff2'),
+        url('./fonts/Barlow-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: medium;
+    src: url('./fonts/Barlow-Medium.woff2') format('woff2'),
+        url('./fonts/Barlow-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 600;
+    src: url('./fonts/Barlow-SemiBold.woff2') format('woff2'),
+        url('./fonts/Barlow-SemiBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: bold;
+    src: url('./fonts/Barlow-Bold.woff2') format('woff2'),
+        url('./fonts/Barlow-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 800;
+    src: url('./fonts/Barlow-ExtraBold.woff2') format('woff2'),
+        url('./fonts/Barlow-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 900;
+    src: url('./fonts/Barlow-Black.woff2') format('woff2'),
+        url('./fonts/Barlow-Black.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Barlow, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: Barlow, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+/* Products */
+@import url('./css/product.css');
+
+/* Products Card */
+@import url('./css/productCard.css');
+
+/* Product Info */
+@import url('./css/productInfo.css');
+
+/* Pagination  */
+@import url('./css/pagination.css');
+
+/* Sorting   */
+@import url('./css/sorting.css');
+
+@import url('./css/header.css');
+
+@import url('./css/modal.css');
+
+@import url('./css/filter_form.css');
+
+@import url('./css/product_form.css');
+@import url('./css/lazy_loading.css');
+
+.btn-load_more {
+    background: white;
+    border: 2px solid green;
+    padding: 10px 20px;
+    margin: 10px auto;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    cursor: pointer;
+}
