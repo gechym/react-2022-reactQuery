@@ -43,7 +43,7 @@ export const getData = async ({ queryKey }) => {
             closeOnClick: true,
             autoClose: 5000,
             transition: Slide,
-            hideProgressBar={true}
+            hideProgressBar: true,
         });
 
         return res.data;
