@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import Pagination from '../components/Pagination';
 import Products from '../components/Products';
@@ -27,9 +27,14 @@ const Product = () => {
         cacheTime: 60 * 1000 * 10, // Thời gia bị kill
     });
 
+    // Chưa tối ưu khi dùng vs staleTime
     // useEffect(() => {
     //     refetch(); // gọi lại useQuery khi refetching ở contex cha thay đổi
     // }, [refetching, refetch]);
+
+    // Truyền data dùng chung cho các trang khác
+    const queryClient = useQueryClient();
+    queryClient.setQueryData('dataFromPageProduct', data);
 
     const totalPage = useMemo(() => {
         if (data?.count) return Math.ceil(data.count / limit);
