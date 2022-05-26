@@ -15,8 +15,9 @@ const Product = () => {
     let { page, sort, refetching } = MyStoreContexNavigate(); // 1 aa
 
     const key = `/products?limit=${limit}&page=${page}&sort=${sort}`;
-    const { data, isLoading, isFetching, error, refetch } = useQuery({
-        // Hổ trợ cache data
+
+    // Hổ trợ cache data
+    const { data, isLoading, isFetching, error, refetch, isPreviousData } = useQuery({
         queryKey: key,
         queryFn: getData,
         enabled: !!limit && !!page && !!sort, // Chặn tự đông gọi api khi cái cấu hình null hoặc undefined
@@ -38,7 +39,7 @@ const Product = () => {
             <h1>{ref.current++}</h1>
             <Sorting page={page} />
             {data && <Products products={data.products} />}
-            {isFetching && <h2>Loading...</h2>} // thay thế loading
+            {isPreviousData && isFetching && <h2>Loading...</h2>} // thay thế loading
             {error && <h2>{error.message}</h2>}
             <Pagination totalPages={totalPage} />
         </div>
