@@ -7,7 +7,7 @@ import { MyStoreContexNavigate } from '../context/Store';
 
 const Product = () => {
     let [products, setProducts] = useState([]);
-    let [limit] = useState(100);
+    let [limit] = useState(5);
 
     let ref = useRef(0);
 
