@@ -25,9 +25,9 @@ const Product = () => {
         // Giữa lại data khi fetch lại data tránh để data null tăng UX kết Hợp vs isFetching để hiển hị loading
     });
 
-    useEffect(() => {
-        refetch(); // gọi lại useQuery khi refetching ở contex cha thay đổi
-    }, [refetching]);
+    // useEffect(() => {
+    //     refetch(); // gọi lại useQuery khi refetching ở contex cha thay đổi
+    // }, [refetching, refetch]);
 
     const totalPage = useMemo(() => {
         if (data?.count) return Math.ceil(data.count / limit);
