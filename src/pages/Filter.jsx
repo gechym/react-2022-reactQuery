@@ -1,48 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Products from '../components/Products';
 import Sorting from '../components/Sorting';
 import { MyStoreContexNavigate } from '../context/Store';
-import useInfinityQuery from '../hooks/useInfinityQuery';
+import { useInfiniteQuery } from 'react-query';
+import { getDataInfinityQuery } from '../APi/ProductApi';
+import useInview from '../hooks/useInView';
 
 const Filter = () => {
     const { value, select: option } = useParams();
-    const [products, setProducts] = useState([]);
     const [limit] = useState(2);
-    const [stop, setStop] = useState(false);
-    const [firstLoad, setFirstLoad] = useState(false);
     const { sort } = MyStoreContexNavigate();
+    const { inView, ref } = useInview();
 
-    const { data, loading, error, renderBtnLoadMore } = useInfinityQuery({
-        url: `/products?price[${option}]=${value}&limit=${limit}&sort=${sort}`,
-        depens: [value, option, sort],
-        otp: { stop, firstLoad },
-    });
+    const key = `/products?price[${option}]=${value}&limit=${limit}&sort=${sort}`;
+    const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+        useInfiniteQuery(key, getDataInfinityQuery, {
+            getNextPageParam: (lastPage, pages) => {
+                const { products } = lastPage;
+                if (products.length >= limit) {
+                    return pages.length + 1;
+                } else {
+                    return undefined;
+                }
+            },
+        });
 
     useEffect(() => {
-        setStop(false);
-        setFirstLoad(false);
-        setProducts([]);
-    }, [value, option, sort]);
-
-    useEffect(() => {
-        if (data?.products) {
-            setProducts((prev) => [...prev, ...data?.products]);
-            setFirstLoad(true);
-
-            if (data.products.length < limit) {
-                setStop(true);
-            }
+        if (inView && !isFetchingNextPage) {
+            fetchNextPage();
         }
-    }, [data?.products, limit]);
+    }, [inView, isFetchingNextPage, fetchNextPage]);
 
     return (
         <div>
             <Sorting />
-            <Products products={products} />
-            {loading && <h2>Loading...</h2>}
+            <div>
+                {data?.pages.map((page, index) => {
+                    return <Products key={index} products={page.products} />;
+                })}
+            </div>
+
+            {isFetching && <h2>Loading...</h2>}
             {error && <h2>{error}</h2>}
-            {renderBtnLoadMore()}
+            {/* {renderBtnLoadMore()} */}
+            {
+                <button
+                    disabled={!hasNextPage || isFetchingNextPage}
+                    onClick={() => fetchNextPage()}
+                    ref={ref}
+                    className="btn-load_more"
+                >
+                    Load more
+                </button>
+            }
         </div>
     );
 };
