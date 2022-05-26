@@ -5,58 +5,34 @@ import Sorting from '../components/Sorting';
 import { MyStoreContexNavigate } from '../context/Store';
 import { useInfiniteQuery } from 'react-query';
 import { getDataInfinityQuery } from '../APi/ProductApi';
+import useInview from '../hooks/useInView';
 
 const Search = () => {
-    // const [products, setProducts] = useState([]);
     const { search } = useParams();
     const { sort } = MyStoreContexNavigate();
+    const { inView, ref } = useInview();
 
     const [limit] = useState(2);
-    // const [stop, setStop] = useState(false);
-    // const [firstLoad, setFirstLoad] = useState(false);
 
-    // const { data, loading, error, renderBtnLoadMore } = useInfinityQuery({
-    //     url: `/products?search=${search}&sort=${sort}&limit=${limit}`,
-    //     depens: [search, sort],
-    //     otp: { stop, firstLoad },
-    // });
     const key = `/products?search=${search}&sort=${sort}&limit=${limit}`;
-    const {
-        data,
-        error,
-        fetchNextPage,
-        hasNextPage,
-        isFetching,
-        isFetchingNextPage,
-        status,
-    } = useInfiniteQuery(key, getDataInfinityQuery, {
-        getNextPageParam: (lastPage, pages) => {
-            const { products } = lastPage;
-            if (products.length >= limit) {
-                return pages.length + 1;
-            } else {
-                return undefined;
-            }
-        },
-    });
+    const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+        useInfiniteQuery(key, getDataInfinityQuery, {
+            getNextPageParam: (lastPage, pages) => {
+                const { products } = lastPage;
+                if (products.length >= limit) {
+                    return pages.length + 1;
+                } else {
+                    return undefined;
+                }
+            },
+        });
 
-    // useEffect(() => {
-    //     setStop(false);
-    //     setFirstLoad(false);
-    //     setProducts([]);
-    // }, [search, sort]);
+    useEffect(() => {
+        if (inView && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    }, [inView, isFetchingNextPage, fetchNextPage]);
 
-    // useEffect(() => {
-    //     if (data?.products) {
-    //         setStop(false);
-    //         setFirstLoad(true);
-    //         setProducts((prev) => [...prev, ...data.products]);
-    //         if (data.products.length < limit) setStop(true);
-    //     } else {
-    //         setStop(true);
-    //     }
-    // }, [data?.products, limit]);
-    console.log(isFetchingNextPage);
     return (
         <div>
             <Sorting />
@@ -73,6 +49,7 @@ const Search = () => {
                 <button
                     disabled={!hasNextPage || isFetchingNextPage}
                     onClick={() => fetchNextPage()}
+                    ref={ref}
                     className="btn-load_more"
                 >
                     Load more

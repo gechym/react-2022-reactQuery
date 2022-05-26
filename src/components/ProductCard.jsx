@@ -5,11 +5,13 @@ import Modal from './Modal';
 import ProductsForm from './ProductsForm';
 import useMutation from '../hooks/useMutation';
 import { deleteProduct } from '../APi/ProductApi';
-import ImageLazyLoading from './ImageLazyLoading';
+// import ImageLazyLoading from './ImageLazyLoading';
+import useLazyLoading from '../hooks/useLazyLoading';
 
 const ProductCard = ({ product }) => {
     const [openProduct, setOpenProduct] = useState(false);
     const { mutate } = useMutation();
+    const { ref } = useLazyLoading();
 
     const handleDelete = (id) => {
         if (window.confirm('Bạn có chắt muốn xóa')) {
@@ -19,7 +21,8 @@ const ProductCard = ({ product }) => {
 
     return (
         <div className="card">
-            <ImageLazyLoading url={product.image} />
+            {/* <ImageLazyLoading url={product.image} /> */}
+            <img className="lazy-load" ref={ref} alt={product.image} />
 
             <div className="box">
                 <h3>
