@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 
 const handleError = (error) => {
     if (error.response?.data.msg) {
@@ -26,21 +26,25 @@ export const deleteProduct = async (id) => {
 // Mutation react-query
 export const getData = async ({ queryKey }) => {
     try {
-        // toast.promise(res, {
-        //     pending: 'Promise is pending',
-        //     success: 'Promise resolved 👌',
-        //     error: 'Promise rejected 🤯',
-        // });
         const id = toast.loading('Please wait...🤯');
         toast.update(id, {
             render: 'Please wait...🤯',
             type: 'success',
             isLoading: true,
+            transition: Slide,
         });
 
         const res = await axios.get(queryKey[0]);
 
-        toast.update(id, { render: 'All is good 👌', type: 'success', isLoading: false });
+        toast.update(id, {
+            render: 'All is good 👌',
+            type: 'success',
+            isLoading: false,
+            closeOnClick: true,
+            autoClose: 5000,
+            transition: Slide,
+            hideProgressBar={true}
+        });
 
         return res.data;
     } catch (error) {
