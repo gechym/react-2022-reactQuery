@@ -26,6 +26,12 @@ export const deleteProduct = async (id) => {
 // Mutation react-query
 export const getData = async ({ queryKey }) => {
     try {
+        // toast.promise(res, {
+        //     pending: 'Promise is pending',
+        //     success: 'Promise resolved 👌',
+        //     error: 'Promise rejected 🤯',
+        // });
+
         const res = await axios.get(queryKey[0]);
         return res.data;
     } catch (error) {

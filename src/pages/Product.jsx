@@ -14,19 +14,14 @@ const Product = () => {
 
     let { page, sort, refetching } = MyStoreContexNavigate(); // 1 aa
 
-    // let { data, loading, error } = useQuery(
-    //     `/products?limit=${limit}&page=${page}&sort=${sort}`,
-    //     {
-    //         saveCache: true,
-    //         refetching,
-    //     },
-    // ); // []
-
     const key = `/products?limit=${limit}&page=${page}&sort=${sort}`;
-    const { data, isLoading, error, refetch } = useQuery({
+    const { data, isLoading, isFetching, error, refetch } = useQuery({
+        // Hổ trợ cache data
         queryKey: key,
         queryFn: getData,
         enabled: !!limit && !!page && !!sort, // Chặn tự đông gọi api khi cái cấu hình null hoặc undefined
+        keepPreviousData: true,
+        // Giữa lại data khi fetch lại data tránh để data null tăng UX kết Hợp vs isFetching để hiển hị loading
     });
 
     useEffect(() => {
@@ -43,7 +38,7 @@ const Product = () => {
             <h1>{ref.current++}</h1>
             <Sorting page={page} />
             {data && <Products products={data.products} />}
-            {isLoading && <h2>Loading...</h2>}
+            {isFetching && <h2>Loading...</h2>} // thay thế loading
             {error && <h2>{error.message}</h2>}
             <Pagination totalPages={totalPage} />
         </div>
