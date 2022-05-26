@@ -31,8 +31,17 @@ export const getData = async ({ queryKey }) => {
         //     success: 'Promise resolved 👌',
         //     error: 'Promise rejected 🤯',
         // });
+        const id = toast.loading('Please wait...🤯');
+        toast.update(id, {
+            render: 'Please wait...🤯',
+            type: 'success',
+            isLoading: true,
+        });
 
         const res = await axios.get(queryKey[0]);
+
+        toast.update(id, { render: 'All is good 👌', type: 'success', isLoading: false });
+
         return res.data;
     } catch (error) {
         handleError(error);

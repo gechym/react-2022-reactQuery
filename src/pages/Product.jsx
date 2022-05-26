@@ -39,7 +39,7 @@ const Product = () => {
             <h1>{ref.current++}</h1>
             <Sorting page={page} />
             {data && <Products products={data.products} />}
-            {isPreviousData && isFetching && <h2>Loading...</h2>} // thay thế loading
+            {isPreviousData && isFetching && <h2>Loading...</h2> /*thay thế loading*/}
             {error && <h2>{error.message}</h2>}
             <Pagination totalPages={totalPage} />
         </div>
