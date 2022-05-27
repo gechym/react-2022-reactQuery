@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { createProduct, handleError, updateProduct } from '../APi/ProductApi';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
 const ProductsForm = ({ btnTxt, data }) => {
     const mutilRef = useRef();
+    const queryClient = useQueryClient();
 
     // const { mutate, loading, error } = useMutation();
     const create = useMutation(createProduct, {
@@ -12,12 +13,21 @@ const ProductsForm = ({ btnTxt, data }) => {
             toast.success('❤️❤️❤️');
         },
         onError: (error) => handleError(error),
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                // Lọc các cache đưa vào dl cũ để fetch lại
+                // predicate: (query) => console.log(query.queryKey.startsWith('/products')),
+            });
+        },
     });
     const update = useMutation(updateProduct, {
         onSuccess: (data) => {
             toast.success('❤️❤️❤️');
         },
         onError: (error) => handleError(error),
+        onSettled: () => {
+            queryClient.invalidateQueries();
+        },
     });
 
     const onHanleSupmit = (e) => {
