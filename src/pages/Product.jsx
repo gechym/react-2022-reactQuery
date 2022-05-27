@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
 import Pagination from '../components/Pagination';
@@ -12,12 +12,12 @@ const Product = () => {
 
     let ref = useRef(0);
 
-    let { page, sort, refetching } = MyStoreContexNavigate(); // 1 aa
+    let { page, sort } = MyStoreContexNavigate(); // 1 aa
 
     const key = `/products?limit=${limit}&page=${page}&sort=${sort}`;
 
     // Hổ trợ cache data
-    const { data, isLoading, isFetching, error, refetch, isPreviousData } = useQuery({
+    const { data, isFetching, error, isPreviousData } = useQuery({
         queryKey: key,
         queryFn: getData,
         enabled: !!limit && !!page && !!sort, // Chặn tự đông gọi api khi cái cấu hình null hoặc undefined
@@ -26,11 +26,6 @@ const Product = () => {
         staleTime: Infinity, // thời gian lưa data lại ko cần chạy ngầm dể load mới data
         cacheTime: 60 * 1000 * 10, // Thời gia bị kill
     });
-
-    // Chưa tối ưu khi dùng vs staleTime
-    // useEffect(() => {
-    //     refetch(); // gọi lại useQuery khi refetching ở contex cha thay đổi
-    // }, [refetching, refetch]);
 
     // Truyền data dùng chung cho các trang khác
     const queryClient = useQueryClient();
