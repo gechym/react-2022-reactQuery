@@ -17,12 +17,12 @@ const ProductDetail = () => {
         isLoading,
         error,
     } = useQuery(key, getData, {
-        // placeholderData: () => {
-        //     if (dataPlaceHolder[0]) {
-        //         const data = dataPlaceHolder[0][1]?.products;
-        //         return data.find((product) => product._id === id);
-        //     }
-        // },
+        placeholderData: () => {
+            if (dataPlaceHolder[0]) {
+                const data = dataPlaceHolder[0][1]?.products;
+                return data.find((product) => product._id === id);
+            }
+        },
     });
 
     return (

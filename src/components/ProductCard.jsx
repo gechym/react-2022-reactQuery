@@ -3,19 +3,25 @@ import { Link } from 'react-router-dom';
 
 import Modal from './Modal';
 import ProductsForm from './ProductsForm';
-import useMutation from '../hooks/useMutation';
+import { useMutation } from 'react-query';
 import { deleteProduct } from '../APi/ProductApi';
 // import ImageLazyLoading from './ImageLazyLoading';
 import useLazyLoading from '../hooks/useLazyLoading';
+import { toast } from 'react-toastify';
 
 const ProductCard = ({ product }) => {
     const [openProduct, setOpenProduct] = useState(false);
-    const { mutate } = useMutation();
+    const deleteAt = useMutation(deleteProduct, {
+        onSuccess: (data) => {
+            toast.success('❤️❤️❤️' + { data });
+        },
+        onError: (error) => handleDelete(error),
+    });
     const { ref } = useLazyLoading();
 
     const handleDelete = (id) => {
         if (window.confirm('Bạn có chắt muốn xóa')) {
-            mutate(() => deleteProduct(id));
+            deleteAt.mutate(id);
         }
     };
 

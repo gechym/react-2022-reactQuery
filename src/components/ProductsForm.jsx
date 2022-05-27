@@ -1,11 +1,24 @@
 import React, { useRef } from 'react';
-import { createProduct, updateProduct } from '../APi/ProductApi';
-import useMutation from '../hooks/useMutation';
+import { createProduct, handleError, updateProduct } from '../APi/ProductApi';
+import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
 
 const ProductsForm = ({ btnTxt, data }) => {
     const mutilRef = useRef();
 
-    const { mutate, loading, error } = useMutation();
+    // const { mutate, loading, error } = useMutation();
+    const create = useMutation(createProduct, {
+        onSuccess: (data) => {
+            toast.success('❤️❤️❤️');
+        },
+        onError: (error) => handleError(error),
+    });
+    const update = useMutation(updateProduct, {
+        onSuccess: (data) => {
+            toast.success('❤️❤️❤️');
+        },
+        onError: (error) => handleError(error),
+    });
 
     const onHanleSupmit = (e) => {
         e.preventDefault();
@@ -20,10 +33,11 @@ const ProductsForm = ({ btnTxt, data }) => {
             newProduct = { ...newProduct, price: Number(newProduct.price) };
             if (!shallowEqual(newProduct, data)) {
                 // mutate(axios.put(`/products/${data._id}`, newProduct))
-                mutate(() => updateProduct({ id: data._id, newData: newProduct }));
+                // mutate(() => updateProduct({ id: data._id, newData: newProduct }));
+                update.mutate({ id: data._id, newData: newProduct });
             }
         } else {
-            mutate(() => createProduct(newProduct));
+            create.mutate(newProduct);
         }
     };
 
@@ -82,8 +96,10 @@ const ProductsForm = ({ btnTxt, data }) => {
                     defaultValue={data?.image}
                 />
 
-                <button disabled={loading}>{loading ? 'Loading..' : btnTxt}</button>
-                <h4>{error}</h4>
+                <button disabled={create.isLoading || update.isLoading}>
+                    {create.isLoading || update.isLoading ? 'Loading..' : btnTxt}
+                </button>
+                <h4>{create.error || update.error}</h4>
             </form>
         </div>
     );

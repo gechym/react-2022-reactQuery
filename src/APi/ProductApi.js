@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Slide, toast } from 'react-toastify';
 
-const handleError = (error) => {
+export const handleError = (error) => {
     if (error.response?.data.msg) {
         toast.error(error.response.data.msg);
         throw new Error(error.response.data.msg);
