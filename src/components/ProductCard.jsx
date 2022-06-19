@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import ProductsForm from './ProductsForm';
 import { useMutation, useQueryClient } from 'react-query';
-import { deleteProduct } from '../APi/ProductApi';
+import { deleteProduct, handleError } from '../APi/ProductApi';
 // import ImageLazyLoading from './ImageLazyLoading';
 import useLazyLoading from '../hooks/useLazyLoading';
 import { toast } from 'react-toastify';
@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
         onSuccess: (data) => {
             toast.success('❤️❤️❤️' + { data });
         },
-        onError: (error) => handleDelete(error),
+        onError: (error) => handleError(error),
         onSettled: () => {
             queryClient.invalidateQueries();
         },
@@ -24,9 +24,9 @@ const ProductCard = ({ product }) => {
     const { ref } = useLazyLoading();
 
     const handleDelete = (id) => {
-        if (window.confirm('Bạn có chắt muốn xóa')) {
-            deleteAt.mutate(id);
-        }
+        // if (window.confirm('Bạn có chắt muốn xóa')) {
+        deleteAt.mutate(id);
+        // }
     };
 
     return (

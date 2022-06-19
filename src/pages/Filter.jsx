@@ -14,17 +14,24 @@ const Filter = () => {
     const { inView, ref } = useInview();
 
     const key = `/products?price[${option}]=${value}&limit=${limit}&sort=${sort}`;
-    const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-        useInfiniteQuery(key, getDataInfinityQuery, {
-            getNextPageParam: (lastPage, pages) => {
-                const { products } = lastPage;
-                if (products.length >= limit) {
-                    return pages.length + 1;
-                } else {
-                    return undefined;
-                }
-            },
-        });
+    const {
+        data,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetching,
+        isLoading,
+        isFetchingNextPage,
+    } = useInfiniteQuery(key, getDataInfinityQuery, {
+        getNextPageParam: (lastPage, pages) => {
+            const { products } = lastPage;
+            if (products.length >= limit) {
+                return pages.length + 1;
+            } else {
+                return undefined;
+            }
+        },
+    });
 
     useEffect(() => {
         if (inView && !isFetchingNextPage) {
